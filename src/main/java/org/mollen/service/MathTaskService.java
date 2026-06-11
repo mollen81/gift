@@ -24,12 +24,12 @@ public class MathTaskService {
 
     public boolean isTaskAnswerCorrect(UUID taskId, double answer) {
         Optional<MathTask> task = repository.findById(taskId);
-        Integer correctAnswer = null;
+        Double correctAnswer = null;
         if(task.isPresent()) {
             correctAnswer = task.get().getResult();
         }
 
         assert correctAnswer != null;
-        return answer == correctAnswer.doubleValue();
+        return correctAnswer.equals(answer);
     }
 }

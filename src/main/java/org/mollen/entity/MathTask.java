@@ -25,7 +25,7 @@ public class MathTask {
     private UUID uuid;
 
     @Column(name = "result", nullable = false)
-    private int result;
+    private double result;
 
     @Column(name = "task_type", nullable = false)
     private MathTaskType taskType;

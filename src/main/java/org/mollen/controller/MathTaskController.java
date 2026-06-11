@@ -33,7 +33,7 @@ public class MathTaskController {
                 MathTaskType.PATTERN).getTaskDescription();
         String taskText = mathTaskService.getRandomTaskByTaskType(
                 MathTaskType.PATTERN).getTaskText();
-        int taskResult = mathTaskService.getRandomTaskByTaskType(
+        double taskResult = mathTaskService.getRandomTaskByTaskType(
                 MathTaskType.PATTERN).getResult();
 
         model.addAttribute(
@@ -60,7 +60,7 @@ public class MathTaskController {
                 MathTaskType.DISCRIMINANT).getTaskDescription();
         String taskText = mathTaskService.getRandomTaskByTaskType(
                 MathTaskType.DISCRIMINANT).getTaskText();
-        int taskResult = mathTaskService.getRandomTaskByTaskType(
+        double taskResult = mathTaskService.getRandomTaskByTaskType(
                 MathTaskType.DISCRIMINANT).getResult();
 
         model.addAttribute(
@@ -86,7 +86,7 @@ public class MathTaskController {
         MathTask mathTask = mathTaskService.getRandomTaskByTaskType(MathTaskType.EQUATION);
         String taskDescription = mathTask.getTaskDescription();
         String taskText = mathTask.getTaskText();
-        int taskResult = mathTask.getResult();
+        double taskResult = mathTask.getResult();
 
         model.addAttribute("taskObject", mathTask);
 
