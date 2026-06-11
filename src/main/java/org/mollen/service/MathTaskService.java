@@ -18,8 +18,8 @@ public class MathTaskService {
     @Autowired
     MathTaskRepository repository;
 
-    public MathTask getTask(MathTaskType taskType) {
-        return repository.findMathTaskByType(taskType);
+    public MathTask getRandomTaskByTaskType(MathTaskType taskType) {
+        return repository.getRandomMathTaskByType(taskType);
     }
 
     public boolean isTaskAnswerCorrect(UUID taskId, double answer) {
