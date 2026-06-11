@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface MathTaskRepository extends CrudRepository<MathTask, UUID> {
-    MathTask findMathTaskByTypeAndResult(MathTaskType type, int result);
+    MathTask findMathTaskByType(MathTaskType type);
 }
