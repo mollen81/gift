@@ -1,0 +1,45 @@
+services:
+  gift:
+    image: mollen/gift-service
+    build:
+      context: .
+    container_name: spring-app
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+
+    env_file:
+      - .env
+
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+
+
+  postgres:
+    image: postgres:17
+    restart: on-failure
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+    healthcheck:
+      test: pg_isready -U $$POSTGRES_USER -d gift_db
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+
+
+volumes:
+  postgres_data:
