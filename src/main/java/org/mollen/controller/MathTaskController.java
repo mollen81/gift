@@ -6,19 +6,17 @@ import org.mollen.service.MathTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @Controller
+@RequestMapping("/math_task")
 public class MathTaskController {
     @Autowired
     MathTaskService mathTaskService;
 
-    @GetMapping("/math_task")
+    @GetMapping("/")
     public String mathTaskWelcome(Model model) {
         model.addAttribute(
                 "description",
@@ -29,7 +27,7 @@ public class MathTaskController {
     }
 
 
-    @GetMapping("/math_task/math_task_1")
+    @GetMapping("/math_task_1")
     public String mathTask1(Model model) {
 
         MathTask task =
@@ -40,7 +38,7 @@ public class MathTaskController {
         return "math_task";
     }
 
-    @GetMapping("/math_task/math_task_2")
+    @GetMapping("/math_task_2")
     public String mathTask2(Model model) {
 
         MathTask task =
@@ -51,7 +49,7 @@ public class MathTaskController {
         return "math_task";
     }
 
-    @GetMapping("/math_task/math_task_3")
+    @GetMapping("/math_task_3")
     public String mathTask3(Model model) {
 
         MathTask task =
