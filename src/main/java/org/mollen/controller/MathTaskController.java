@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.UUID;
 
 @Controller
-@RestController
 public class MathTaskController {
     @Autowired
     MathTaskService mathTaskService;
@@ -28,90 +30,45 @@ public class MathTaskController {
 
 
     @GetMapping("/math_task/math_task_1")
-    public String mathTask_1(Model model) {
-        String taskDescription = mathTaskService.getRandomTaskByTaskType(
-                MathTaskType.PATTERN).getTaskDescription();
-        String taskText = mathTaskService.getRandomTaskByTaskType(
-                MathTaskType.PATTERN).getTaskText();
-        double taskResult = mathTaskService.getRandomTaskByTaskType(
-                MathTaskType.PATTERN).getResult();
+    public String mathTask1(Model model) {
 
-        model.addAttribute(
-                "taskDescription",
-                taskDescription
-        );
+        MathTask task =
+                mathTaskService.getRandomTaskByTaskType(MathTaskType.PATTERN);
 
-        model.addAttribute(
-                "taskText",
-                taskText
-        );
+        model.addAttribute("taskObject", task);
 
-        model.addAttribute(
-                "taskResult",
-                taskResult
-        );
-
-        return "math_task_1";
+        return "math_task";
     }
 
     @GetMapping("/math_task/math_task_2")
-    public String mathTask_2(Model model) {
-        String taskDescription = mathTaskService.getRandomTaskByTaskType(
-                MathTaskType.DISCRIMINANT).getTaskDescription();
-        String taskText = mathTaskService.getRandomTaskByTaskType(
-                MathTaskType.DISCRIMINANT).getTaskText();
-        double taskResult = mathTaskService.getRandomTaskByTaskType(
-                MathTaskType.DISCRIMINANT).getResult();
+    public String mathTask2(Model model) {
 
-        model.addAttribute(
-                "taskDescription",
-                taskDescription
-        );
+        MathTask task =
+                mathTaskService.getRandomTaskByTaskType(MathTaskType.DISCRIMINANT);
 
-        model.addAttribute(
-                "taskText",
-                taskText
-        );
+        model.addAttribute("taskObject", task);
 
-        model.addAttribute(
-                "taskResult",
-                taskResult
-        );
-
-        return "math_task_2";
+        return "math_task";
     }
 
     @GetMapping("/math_task/math_task_3")
-    public String mathTask_3(Model model) {
-        MathTask mathTask = mathTaskService.getRandomTaskByTaskType(MathTaskType.EQUATION);
-        String taskDescription = mathTask.getTaskDescription();
-        String taskText = mathTask.getTaskText();
-        double taskResult = mathTask.getResult();
+    public String mathTask3(Model model) {
 
-        model.addAttribute("taskObject", mathTask);
+        MathTask task =
+                mathTaskService.getRandomTaskByTaskType(MathTaskType.EQUATION);
 
-        model.addAttribute(
-                "taskDescription",
-                taskDescription
-        );
+        model.addAttribute("taskObject", task);
 
-        model.addAttribute(
-                "taskText",
-                taskText
-        );
-
-        model.addAttribute(
-                "taskResult",
-                taskResult
-        );
-
-        return "math_task_3";
+        return "math_task";
     }
 
 
-    @GetMapping("/math_task_check_answer")
-    public boolean mathTaskCheck(@RequestParam double userAnswer, Model model) {
-        MathTask mathTask = (MathTask) model.getAttribute("taskObject");
-        return mathTaskService.isTaskAnswerCorrect(mathTask.getUuid(), userAnswer);
+    @PostMapping("/math_task_check")
+    @ResponseBody
+    public boolean mathTaskCheck(
+            @RequestParam UUID taskId,
+            @RequestParam double userAnswer)
+    {
+        return mathTaskService.isTaskAnswerCorrect(taskId, userAnswer);
     }
 }

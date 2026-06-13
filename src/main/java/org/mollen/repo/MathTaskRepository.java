@@ -10,6 +10,13 @@ import java.util.UUID;
 
 @Repository
 public interface MathTaskRepository extends CrudRepository<MathTask, UUID> {
-    @Query(value = "SELECT * FROM math_tasks ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
+    @Query(value = """
+                    SELECT *
+                    FROM math_tasks
+                    WHERE task_type = :type           
+                    ORDER BY RANDOM()
+                    LIMIT 1      
+                    """,
+            nativeQuery = true)
     MathTask getRandomMathTaskByType(MathTaskType type);
 }
