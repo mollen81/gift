@@ -73,6 +73,14 @@
          th:text="${description}">
     </div>
 
+    <form th:action="@{/math_task}" method="get">
+        <input type="hidden" name="step" value="1">
+
+        <button class="submit-btn" type="submit">
+            Перейти к задачам
+        </button>
+    </form>
+
 
 </div>
 

@@ -67,8 +67,60 @@
         .submit-btn:hover {
             background: #1565c0;
         }
+
+         .result-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .icon {
+            display: none;
+            font-size: 80px;
+            font-weight: bold;
+            animation: pop 0.4s ease;
+        }
+
+        .success {
+            color: #2e7d32;
+        }
+
+        .error {
+            color: #d32f2f;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.15);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        #resultText {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #nextTaskButton {
+            margin-top: 20px;
+        }
+
+        #nextTaskButton:disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="task-card">
@@ -85,7 +137,7 @@
          th:text="${taskObject.taskText}">
     </div>
 
-    <form th:action="@{/math_task_check}" method="post">
+    <form id="answerForm">
 
         <input type="hidden"
                name="taskId"
@@ -104,7 +156,96 @@
 
     </form>
 
+    <div id="resultContainer" class="result-container">
+
+        <div id="successIcon" class="icon success">
+            ✓
+        </div>
+
+        <div id="errorIcon" class="icon error">
+            ✕
+        </div>
+
+        <div id="resultText"></div>
+
+    </div>
+
+    <button id="nextTaskButton"
+            class="submit-btn"
+            disabled
+            th:data-next-step="${step + 1}">
+        Следующая задача
+    </button>
+
 </div>
+
+<script>
+    document.getElementById("answerForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const taskId =
+                document.querySelector("input[name='taskId']").value;
+
+            const userAnswer =
+                document.querySelector("input[name='userAnswer']").value;
+
+            const response = await fetch("/math_task_check", {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+                },
+                body:
+                    "taskId=" + taskId +
+                    "&userAnswer=" + userAnswer
+            });
+
+            const isCorrect = await response.json();
+
+            const successIcon =
+                document.getElementById("successIcon");
+
+            const errorIcon =
+                document.getElementById("errorIcon");
+
+            const resultText =
+                document.getElementById("resultText");
+
+            const nextButton =
+                document.getElementById("nextTaskButton");
+
+            successIcon.style.display = "none";
+            errorIcon.style.display = "none";
+
+            if(isCorrect) {
+
+                successIcon.style.display = "block";
+
+                resultText.innerText =
+                    "Ответ верный!";
+
+                nextButton.disabled = false;
+
+            } else {
+
+                errorIcon.style.display = "block";
+
+                resultText.innerText =
+                    "Ответ неверный!";
+            }
+        });
+
+        document.getElementById("nextTaskButton")
+            .addEventListener("click", function () {
+
+            const nextStep = this.dataset.nextStep;
+
+            window.location.href =
+                "/math_task?step=" + nextStep;
+        });
+</script>
 
 </body>
 </html>
