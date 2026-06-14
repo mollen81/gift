@@ -7,6 +7,7 @@ import org.mollen.entity.entity_type.MathTaskType;
 import org.mollen.repo.MathTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class MathTaskService {
         return repository.getRandomMathTaskByType(taskType);
     }
 
-    public boolean isTaskAnswerCorrect(UUID taskId, double answer) {
+    public boolean isTaskAnswerCorrect(@RequestParam UUID taskId, @RequestParam double answer) {
         return repository.findById(taskId)
                 .map(task -> task.getResult() == answer)
                 .orElse(false);

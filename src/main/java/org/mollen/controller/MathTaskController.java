@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/math_task")
 public class MathTaskController {
     @Autowired
     MathTaskService mathTaskService;
 
-    @GetMapping("/")
+    @GetMapping("math_task/welcome_page")
     public String mathTaskWelcome(Model model) {
         model.addAttribute(
                 "description",
@@ -27,34 +26,23 @@ public class MathTaskController {
     }
 
 
-    @GetMapping("/math_task_1")
-    public String mathTask1(Model model) {
+    @GetMapping("/math_task")
+    public String mathTask(
+            @RequestParam int step,
+            Model model
+    ) {
 
-        MathTask task =
-                mathTaskService.getRandomTaskByTaskType(MathTaskType.PATTERN);
+        MathTask task;
+        switch(step) {
+            case 1 -> task = mathTaskService.getRandomTaskByTaskType(MathTaskType.PATTERN);
+            case 2 -> task = mathTaskService.getRandomTaskByTaskType(MathTaskType.DISCRIMINANT);
+            case 3 -> task = mathTaskService.getRandomTaskByTaskType(MathTaskType.EQUATION);
+            default -> {
+                return "redirect:/math_task_finish";
+            }
+        }
 
-        model.addAttribute("taskObject", task);
-
-        return "math_task";
-    }
-
-    @GetMapping("/math_task_2")
-    public String mathTask2(Model model) {
-
-        MathTask task =
-                mathTaskService.getRandomTaskByTaskType(MathTaskType.DISCRIMINANT);
-
-        model.addAttribute("taskObject", task);
-
-        return "math_task";
-    }
-
-    @GetMapping("/math_task_3")
-    public String mathTask3(Model model) {
-
-        MathTask task =
-                mathTaskService.getRandomTaskByTaskType(MathTaskType.EQUATION);
-
+        model.addAttribute("step", step);
         model.addAttribute("taskObject", task);
 
         return "math_task";
