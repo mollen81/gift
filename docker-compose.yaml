@@ -27,18 +27,17 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
-
-    healthcheck:
-      test: pg_isready -U $$POSTGRES_USER -d gift_db
-      interval: 10s
-      timeout: 5s
-      start_period: 10s
-      retries: 5
-
     environment:
       POSTGRES_DB: ${PG_DB}
       POSTGRES_USER: ${PG_USERNAME}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
+
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${PG_DB}
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
 
 
 volumes:
