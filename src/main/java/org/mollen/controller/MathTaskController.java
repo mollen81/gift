@@ -57,4 +57,10 @@ public class MathTaskController {
     {
         return mathTaskService.isTaskAnswerCorrect(taskId, userAnswer);
     }
+
+
+    @GetMapping("/math_task_finish")
+    public String mathTaskFinish(Model model) {
+        model.addAttribute("codeNumber", );
+    }
 }
