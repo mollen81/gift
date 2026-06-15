@@ -38,7 +38,7 @@ public class MathTaskController {
             case 2 -> task = mathTaskService.getRandomTaskByTaskType(MathTaskType.DISCRIMINANT);
             case 3 -> task = mathTaskService.getRandomTaskByTaskType(MathTaskType.EQUATION);
             default -> {
-                return "redirect:/math_task_finish";
+                return "redirect:/math_task_finish.html";
             }
         }
 
@@ -59,8 +59,10 @@ public class MathTaskController {
     }
 
 
-    @GetMapping("/math_task_finish")
+    @GetMapping("/math_task_finish.html")
     public String mathTaskFinish(Model model) {
-        model.addAttribute("codeNumber", );
+        model.addAttribute("codeNumber", System.getenv("CODE").charAt(0));
+
+        return "math_task_finish.html";
     }
 }
