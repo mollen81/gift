@@ -8,13 +8,29 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f6f9;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
             min-height: 100vh;
+
+            background-color: #f4f6f9;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+
+            position: fixed;
+            inset: 0;
+
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg opacity='0.55'%3E%3Ccircle cx='40' cy='40' r='4' fill='%23FFD54F'/%3E%3Cellipse cx='40' cy='30' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='50' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 50 35)'/%3E%3Cellipse cx='50' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 50 45)'/%3E%3Cellipse cx='40' cy='50' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='30' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 30 45)'/%3E%3Cellipse cx='30' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 30 35)'/%3E%3C/g%3E%3C/svg%3E");
+
+            background-size: 80px 80px;
+            background-repeat: repeat;
+
+            z-index: -1;
         }
 
         .finish-card {
@@ -23,8 +39,14 @@
             padding: 40px;
             border-radius: 16px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-
             text-align: center;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            animation: pop 0.5s ease;
         }
 
         .title {
@@ -37,22 +59,17 @@
             font-size: 18px;
             color: #666;
             margin-bottom: 30px;
-        }
-
-        .success-icon {
-            font-size: 80px;
-            color: #2e7d32;
-            margin-bottom: 20px;
-            animation: pop 0.5s ease;
+            line-height: 1.5;
         }
 
         .code-container {
             margin-top: 20px;
+            margin-bottom: 60px;
         }
 
         .code-label {
             font-size: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .code-number {
@@ -64,7 +81,23 @@
             border-radius: 12px;
 
             display: inline-block;
-            padding: 15px 40px;
+
+            padding: 20px 50px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #1976d2;
+            color: white;
+            font-size: 18px;
+        }
+
+        .submit-btn:hover {
+            background: #1565c0;
         }
 
         @keyframes pop {
@@ -112,6 +145,14 @@
             0
         </div>
     </div>
+
+    <form th:action="@{/fillword/welcome_page}" method="get">
+        <input type="hidden" name="step" value="1">
+
+        <button class="submit-btn" type="submit">
+            Перейти к филворду
+        </button>
+    </form>
 
 </div>
 
