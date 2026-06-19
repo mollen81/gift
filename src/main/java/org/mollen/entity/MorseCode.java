@@ -28,4 +28,7 @@ public class MorseCode {
 
     @Column(name = "question")
     private String question;
+
+    @Column(name = "result")
+    private int result;
 }
