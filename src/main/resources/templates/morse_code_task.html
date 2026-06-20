@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Азбука Морзе</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background-color: #87ceeb;
+                position: relative;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg opacity='0.55'%3E%3Ccircle cx='40' cy='40' r='4' fill='%23FFD54F'/%3E%3Cellipse cx='40' cy='30' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='50' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 50 35)'/%3E%3Cellipse cx='50' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 50 45)'/%3E%3Cellipse cx='40' cy='50' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='30' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 30 45)'/%3E%3Cellipse cx='30' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 30 35)'/%3E%3C/g%3E%3C/svg%3E");
+                background-size: 80px 80px;
+                background-repeat: repeat;
+                z-index: -1;
+            }
+
+            .task-card {
+                width: 600px;
+                background: white;
+                padding: 32px;
+                border-radius: 16px;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+                animation: fadeIn 0.5s ease;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(15px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .title {
+                text-align: center;
+                font-size: 28px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .description {
+                text-align: center;
+                color: #666;
+                margin-bottom: 25px;
+            }
+
+            .morse-text {
+                text-align: center;
+                font-size: 36px;
+                font-weight: bold;
+                letter-spacing: 8px;
+                margin-bottom: 30px;
+            }
+
+            .answer-input {
+                width: 100%;
+                padding: 12px;
+                font-size: 18px;
+                box-sizing: border-box;
+                margin-bottom: 16px;
+            }
+
+            .submit-btn {
+                width: 100%;
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                background: #1976d2;
+                color: white;
+                font-size: 18px;
+            }
+
+            .submit-btn:hover {
+                background: #1565c0;
+            }
+
+            .result-container {
+                text-align: center;
+                margin-top: 20px;
+                min-height: 120px;
+            }
+
+            .icon {
+                display: none;
+                font-size: 80px;
+                font-weight: bold;
+                animation: pop 0.4s ease;
+            }
+
+            .success {
+                color: #2e7d32;
+            }
+
+            .error {
+                color: #d32f2f;
+            }
+
+            @keyframes pop {
+                0% {
+                    transform: scale(0.3);
+                    opacity: 0;
+                }
+                70% {
+                    transform: scale(1.15);
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            #resultText {
+                margin-top: 10px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            #finishButton {
+                margin-top: 20px;
+            }
+
+            #finishButton:disabled {
+                background: gray;
+                cursor: not-allowed;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="task-card">
+            <div class="title" th:text="|Загадка №${step}|">Загадка</div>
+
+            <img
+                src="/static/images/morse_translation.png"
+                alt="morse_translation"
+            />
+
+            <div class="description">
+                Твоя задача собрать предложение из символов азбуки морзе,
+                отгадать загадку, а затем ответить на встречный вопрос.
+            </div>
+
+            <div class="morse-text" th:text="${morseText}"></div>
+
+            <form id="answerForm">
+                <input type="hidden" name="taskId" th:value="${taskId}" />
+
+                <input
+                    class="answer-input"
+                    type="text"
+                    name="userAnswer"
+                    placeholder="Введите ответ "
+                    required
+                />
+
+                <button class="submit-btn" type="submit">
+                    Проверить ответ
+                </button>
+            </form>
+
+            <div class="result-container">
+                <div id="successIcon" class="icon success">✓</div>
+                <div id="errorIcon" class="icon error">✕</div>
+                <div id="resultText"></div>
+            </div>
+
+            <button
+                id="nextTaskButton"
+                class="submit-btn"
+                th:attr="data-next-step=${nextStep}"
+                disabled
+            >
+                Перейти к следующей задаче
+            </button>
+        </div>
+
+        <script>
+            document
+                .getElementById("answerForm")
+                .addEventListener("submit", async function (event) {
+                    event.preventDefault();
+
+                    const taskId = document.querySelector(
+                        "input[name='taskId']",
+                    ).value;
+
+                    const userAnswer = document.querySelector(
+                        "input[name='userAnswer']",
+                    ).value;
+
+                    const response = await fetch("/morse_code_check", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body:
+                            "taskId=" +
+                            encodeURIComponent(taskId) +
+                            "&userAnswer=" +
+                            encodeURIComponent(userAnswer),
+                    });
+
+                    const isCorrect = await response.json();
+
+                    const successIcon = document.getElementById("successIcon");
+
+                    const errorIcon = document.getElementById("errorIcon");
+
+                    const resultText = document.getElementById("resultText");
+
+                    const nextButton =
+                        document.getElementById("nextTaskButton");
+
+                    successIcon.style.display = "none";
+                    errorIcon.style.display = "none";
+
+                    if (isCorrect) {
+                        successIcon.style.display = "block";
+                        resultText.innerText = "Ответ верный!";
+                        nextButton.disabled = false;
+                    } else {
+                        errorIcon.style.display = "block";
+                        resultText.innerText = "Ответ неверный!";
+                    }
+                });
+
+            document
+                .getElementById("nextTaskButton")
+                .addEventListener("click", function () {
+                    const nextStep = this.dataset.nextStep;
+                    window.location.href = "/morse_code/task?step=" + nextStep;
+                });
+        </script>
+    </body>
+</html>

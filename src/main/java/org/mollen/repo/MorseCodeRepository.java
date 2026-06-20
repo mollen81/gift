@@ -8,10 +8,10 @@ import java.util.UUID;
 
 public interface MorseCodeRepository extends CrudRepository<MorseCode, UUID> {
     @Query(value = """
-                SELECT
-                * FROM morse_code
-                ORDER BY RANDOM()
-                LIMIT 1
-            """, nativeQuery = true)
+                    SELECT *
+                    FROM morse_codes
+                    ORDER BY RANDOM()
+                    LIMIT 1
+                    """, nativeQuery = true)
     MorseCode getRandomMorseCode();
 }

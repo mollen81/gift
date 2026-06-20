@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/src/main/java/org/mollen/controller/FillwordController.java;/home/mollen/OpenIDEProjects/gift/src/main/java/org/mollen/controller/MathTaskController.java;/home/mollen/OpenIDEProjects/gift/src/main/java/org/mollen/entity/entity_type/MathTaskType.java;/home/mollen/OpenIDEProjects/gift/src/main/java/org/mollen/entity/MathTask.java;/home/mollen/OpenIDEProjects/gift/src/main/java/org/mollen/repo/MathTaskRepository.java;/home/mollen/OpenIDEProjects/gift/src/main/java/org/mollen/service/FillwordService.java;/home/mollen/OpenIDEProjects/gift/src/main/java/org/mollen/service/MathTaskService.java;/home/mollen/OpenIDEProjects/gift/src/main/java/org/mollen/Main.java;/home/mollen/OpenIDEProjects/gift/src/main/resources/templates/math_task.html;/home/mollen/OpenIDEProjects/gift/src/main/resources/templates/math_task_finish.html;/home/mollen/OpenIDEProjects/gift/src/main/resources/templates/math_task_welcome.html;/home/mollen/OpenIDEProjects/gift/docker-compose.yaml" />
+  </component>
+</project>

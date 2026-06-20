@@ -20,10 +20,10 @@ public class MorseCode {
     @JdbcTypeCode(SqlTypes.UUID)
     private UUID uuid;
 
-    @Column(name = "task_text")
-    private String taskText;
+    @Column(name = "morse_translation")
+    private String morseTranslation;
 
-    @Column(name = "morse_text")
+    @Column(name = "morse_text", length = 5000)
     private String morseText;
 
     @Column(name = "question")
