@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 500" width="100%" height="100%" style="background-color: white; border-radius: 8px;">
+    <path d="M 80,110 C 80,300 320,200 320,400" fill="none" stroke="#333" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 160,110 C -20,250 340,250 160,400" fill="none" stroke="#333" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 240,110 C 240,250 480,250 480,400" fill="none" stroke="#333" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 320,110 C 320,250 240,300 240,400" fill="none" stroke="#333" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 400,110 C 580,200 220,300 400,400" fill="none" stroke="#333" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 480,110 C 480,350 80,150 80,400" fill="none" stroke="#333" stroke-width="5" stroke-linecap="round"/>
+
+    <g font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle">
+        <rect x="50" y="50" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="80" y="92">1</text>
+        <rect x="130" y="50" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="160" y="92">2</text>
+        <rect x="210" y="50" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="240" y="92">3</text>
+        <rect x="290" y="50" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="320" y="92">4</text>
+        <rect x="370" y="50" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="400" y="92">5</text>
+        <rect x="450" y="50" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="480" y="92">6</text>
+    </g>
+
+    <g font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle">
+        <rect x="50" y="400" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="80" y="442">С</text>
+        <rect x="130" y="400" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="160" y="442">О</text>
+        <rect x="210" y="400" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="240" y="442">П</text>
+        <rect x="290" y="400" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="320" y="442">К</text>
+        <rect x="370" y="400" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="400" y="442">А</text>
+        <rect x="450" y="400" width="60" height="60" fill="#fff" stroke="#000" stroke-width="3"/>
+        <text x="480" y="442">М</text>
+    </g>
+</svg>
