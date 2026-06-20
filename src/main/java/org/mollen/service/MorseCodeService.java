@@ -26,4 +26,10 @@ public class MorseCodeService {
                 .map(task -> task.getResult() == answer)
                 .orElse(false);
     }
+
+    public boolean isRiddleAnswerCorrect(UUID taskId, String answer) {
+        return repository.findById(taskId)
+                .map(task -> task.getRiddleAnswer().trim().equalsIgnoreCase(answer.trim()))
+                .orElse(false);
+    }
 }

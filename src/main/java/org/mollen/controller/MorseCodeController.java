@@ -50,15 +50,23 @@ public class MorseCodeController {
         return "morse_code_task";
     }
 
+
     @PostMapping("/morse_code_check")
     @ResponseBody
     public boolean morseCodeTaskCheck(@RequestParam UUID taskId, @RequestParam int answer) {
         return morseCodeService.isTaskAnswerCorrect(taskId, answer);
     }
 
+    @PostMapping("/morse_code_check_riddle")
+    @ResponseBody
+    public boolean morseCodeRiddleCheck(@RequestParam UUID taskId, @RequestParam String userAnswer) {
+        return morseCodeService.isRiddleAnswerCorrect(taskId, userAnswer);
+    }
+
+
     @GetMapping("/morse_code_finish")
     public String morseCodeFinish(Model model) {
-        model.addAttribute("codeNumber", System.getenv("CODE").charAt(1));
+        model.addAttribute("codeNumber", System.getenv("CODE").substring(1, 3));
 
         return "morse_code_finish";
     }

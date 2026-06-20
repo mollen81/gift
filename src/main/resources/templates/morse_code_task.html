@@ -146,7 +146,7 @@
             <div class="title" th:text="|Загадка №${step}|">Загадка</div>
 
             <img
-                src="/static/images/morse_translation.png"
+                th:src="@{/images/morse_translation.png}"
                 alt="morse_translation"
             />
 
@@ -157,21 +157,49 @@
 
             <div class="morse-text" th:text="${morseText}"></div>
 
-            <form id="answerForm">
+            <form id="riddleForm">
                 <input type="hidden" name="taskId" th:value="${taskId}" />
-
                 <input
                     class="answer-input"
                     type="text"
-                    name="userAnswer"
-                    placeholder="Введите ответ "
+                    id="riddleAnswer"
+                    placeholder="Введите отгадку (слово)"
                     required
                 />
-
-                <button class="submit-btn" type="submit">
-                    Проверить ответ
+                <button class="submit-btn" type="submit" id="riddleSubmitBtn">
+                    Проверить отгадку
                 </button>
             </form>
+
+            <div id="questionContainer" style="display: none; margin-top: 25px">
+                <div
+                    class="description"
+                    style="
+                        font-weight: bold;
+                        font-size: 20px;
+                        color: #1976d2;
+                        margin-bottom: 15px;
+                    "
+                    th:text="${taskDescription}"
+                ></div>
+
+                <form id="finalAnswerForm">
+                    <input
+                        class="answer-input"
+                        type="number"
+                        id="finalAnswer"
+                        placeholder="Введите ответ на вопрос (число)"
+                        required
+                    />
+                    <button
+                        class="submit-btn"
+                        type="submit"
+                        id="finalSubmitBtn"
+                    >
+                        Проверить окончательный ответ
+                    </button>
+                </form>
+            </div>
 
             <div class="result-container">
                 <div id="successIcon" class="icon success">✓</div>
@@ -182,28 +210,37 @@
             <button
                 id="nextTaskButton"
                 class="submit-btn"
-                th:attr="data-next-step=${nextStep}"
+                th:data-next-step="${step + 1}"
                 disabled
             >
-                Перейти к следующей задаче
-            </button>
+                Перейти к следующей задаче</button
+            >>
         </div>
 
         <script>
+            const taskId = document.querySelector("input[name='taskId']").value;
+            const successIcon = document.getElementById("successIcon");
+            const errorIcon = document.getElementById("errorIcon");
+            const resultText = document.getElementById("resultText");
+            const nextButton = document.getElementById("nextTaskButton");
+
+            function clearStatus() {
+                successIcon.style.display = "none";
+                errorIcon.style.display = "none";
+                resultText.innerText = "";
+            }
+
+            // Обработка Шага 1: Проверка слова-отгадки
             document
-                .getElementById("answerForm")
+                .getElementById("riddleForm")
                 .addEventListener("submit", async function (event) {
                     event.preventDefault();
+                    clearStatus();
 
-                    const taskId = document.querySelector(
-                        "input[name='taskId']",
-                    ).value;
+                    const userAnswer =
+                        document.getElementById("riddleAnswer").value;
 
-                    const userAnswer = document.querySelector(
-                        "input[name='userAnswer']",
-                    ).value;
-
-                    const response = await fetch("/morse_code_check", {
+                    const response = await fetch("/morse_code_check_riddle", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/x-www-form-urlencoded",
@@ -217,28 +254,65 @@
 
                     const isCorrect = await response.json();
 
-                    const successIcon = document.getElementById("successIcon");
-
-                    const errorIcon = document.getElementById("errorIcon");
-
-                    const resultText = document.getElementById("resultText");
-
-                    const nextButton =
-                        document.getElementById("nextTaskButton");
-
-                    successIcon.style.display = "none";
-                    errorIcon.style.display = "none";
-
                     if (isCorrect) {
                         successIcon.style.display = "block";
-                        resultText.innerText = "Ответ верный!";
-                        nextButton.disabled = false;
+                        resultText.innerText =
+                            "Отгадка верна! Теперь ответьте на появившийся вопрос.";
+
+                        // Активируем Шаг 2 и блокируем Шаг 1
+                        document.getElementById(
+                            "questionContainer",
+                        ).style.display = "block";
+                        document.getElementById("riddleAnswer").disabled = true;
+                        document.getElementById("riddleSubmitBtn").disabled =
+                            true;
                     } else {
                         errorIcon.style.display = "block";
-                        resultText.innerText = "Ответ неверный!";
+                        resultText.innerText =
+                            "Неверная отгадка, попробуйте еще раз!";
                     }
                 });
 
+            // Обработка Шага 2: Проверка числа (результата)
+            document
+                .getElementById("finalAnswerForm")
+                .addEventListener("submit", async function (event) {
+                    event.preventDefault();
+                    clearStatus();
+
+                    const answer = document.getElementById("finalAnswer").value;
+
+                    const response = await fetch("/morse_code_check", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body:
+                            "taskId=" +
+                            encodeURIComponent(taskId) +
+                            "&answer=" +
+                            encodeURIComponent(answer),
+                    });
+
+                    const isCorrect = await response.json();
+
+                    if (isCorrect) {
+                        successIcon.style.display = "block";
+                        resultText.innerText =
+                            "Ответ верный! Задание полностью пройдено.";
+
+                        // Разблокируем переход к следующему шагу и фиксируем инпуты
+                        nextButton.disabled = false;
+                        document.getElementById("finalAnswer").disabled = true;
+                        document.getElementById("finalSubmitBtn").disabled =
+                            true;
+                    } else {
+                        errorIcon.style.display = "block";
+                        resultText.innerText = "Ответ на вопрос неверный!";
+                    }
+                });
+
+            // Переход к следующему шагу
             document
                 .getElementById("nextTaskButton")
                 .addEventListener("click", function () {

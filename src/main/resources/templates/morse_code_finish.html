@@ -1,179 +1,162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Азбука Морзе пройдена</title>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Азбука Морзе пройдена</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
-            min-height: 100vh;
+                min-height: 100vh;
 
-            background-color: #87CEEB;
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-
-            position: fixed;
-            inset: 0;
-
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg opacity='0.55'%3E%3Ccircle cx='40' cy='40' r='4' fill='%23FFD54F'/%3E%3Cellipse cx='40' cy='30' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='50' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 50 35)'/%3E%3Cellipse cx='50' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 50 45)'/%3E%3Cellipse cx='40' cy='50' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='30' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 30 45)'/%3E%3Cellipse cx='30' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 30 35)'/%3E%3C/g%3E%3C/svg%3E");
-
-            background-size: 80px 80px;
-            background-repeat: repeat;
-
-            z-index: -1;
-        }
-
-        .finish-card {
-            width: 600px;
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-
-            text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .success-icon {
-            font-size: 80px;
-            color: #2e7d32;
-            margin-bottom: 20px;
-
-            animation: pop 0.5s ease;
-        }
-
-        .title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .description {
-            font-size: 18px;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .code-container {
-            margin-top: 30px;
-            margin-bottom: 40px;
-        }
-
-        .code-label {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .code-number {
-            font-size: 72px;
-            font-weight: bold;
-            color: #1976d2;
-
-            border: 3px dashed #1976d2;
-            border-radius: 12px;
-
-            display: inline-block;
-            padding: 20px 50px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-
-            border: none;
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            background: #1976d2;
-            color: white;
-
-            font-size: 18px;
-        }
-
-        .submit-btn:hover {
-            background: #1565c0;
-        }
-
-        @keyframes pop {
-            0% {
-                transform: scale(0.3);
-                opacity: 0;
+                background-color: #87ceeb;
+                position: relative;
             }
 
-            70% {
-                transform: scale(1.15);
+            body::before {
+                content: "";
+
+                position: fixed;
+                inset: 0;
+
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg opacity='0.55'%3E%3Ccircle cx='40' cy='40' r='4' fill='%23FFD54F'/%3E%3Cellipse cx='40' cy='30' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='50' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 50 35)'/%3E%3Cellipse cx='50' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 50 45)'/%3E%3Cellipse cx='40' cy='50' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='30' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 30 45)'/%3E%3Cellipse cx='30' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 30 35)'/%3E%3C/g%3E%3C/svg%3E");
+
+                background-size: 80px 80px;
+                background-repeat: repeat;
+
+                z-index: -1;
             }
 
-            100% {
-                transform: scale(1);
-                opacity: 1;
+            .finish-card {
+                width: 600px;
+                background: white;
+                padding: 40px;
+                border-radius: 16px;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+                text-align: center;
+                animation: fadeIn 0.5s ease;
             }
-        }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
+            .success-icon {
+                font-size: 80px;
+                color: #2e7d32;
+                margin-bottom: 20px;
+
+                animation: pop 0.5s ease;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .title {
+                font-size: 32px;
+                font-weight: bold;
+                margin-bottom: 20px;
             }
-        }
-    </style>
-</head>
-<body>
 
-<div class="finish-card">
+            .description {
+                font-size: 18px;
+                color: #666;
+                line-height: 1.6;
+            }
 
-    <div class="success-icon">
-        ✓
-    </div>
+            .code-container {
+                margin-top: 30px;
+                margin-bottom: 40px;
+            }
 
-    <div class="title">
-        Поздравляем!
-    </div>
+            .code-label {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
 
-    <div class="description">
-        Вы успешно расшифровали сообщение азбукой Морзе.
-        <br><br>
-        В награду получите вторую цифру кода:
-    </div>
+            .code-number {
+                font-size: 72px;
+                font-weight: bold;
+                color: #1976d2;
 
-    <div class="code-container">
+                border: 3px dashed #1976d2;
+                border-radius: 12px;
 
-        <div class="code-label">
-            Цифра кода
+                display: inline-block;
+                padding: 20px 50px;
+            }
+
+            .submit-btn {
+                width: 100%;
+                padding: 12px;
+
+                border: none;
+                border-radius: 8px;
+
+                cursor: pointer;
+
+                background: #1976d2;
+                color: white;
+
+                font-size: 18px;
+            }
+
+            .submit-btn:hover {
+                background: #1565c0;
+            }
+
+            @keyframes pop {
+                0% {
+                    transform: scale(0.3);
+                    opacity: 0;
+                }
+
+                70% {
+                    transform: scale(1.15);
+                }
+
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(15px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="finish-card">
+            <div class="success-icon">✓</div>
+
+            <div class="title">Поздравляем!</div>
+
+            <div class="description">
+                Вы успешно расшифровали сообщение азбукой Морзе.
+                <br /><br />
+                В награду получите вторую и третью цифру кода:
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">[2] и [3] цифры кода</div>
+
+                <div class="code-number" th:text="${codeNumber}">0</div>
+            </div>
+
+            <form th:action="@{/next_block/welcome_page}" method="get">
+                <button class="submit-btn" type="submit">
+                    Перейти к следующему блоку заданий
+                </button>
+            </form>
         </div>
-
-        <div class="code-number"
-             th:text="${codeNumber}">
-            0
-        </div>
-
-    </div>
-
-    <form th:action="@{/next_block/welcome_page}" method="get">
-
-        <button class="submit-btn" type="submit">
-            Перейти к следующему блоку заданий
-        </button>
-
-    </form>
-
-</div>
-
-</body>
+    </body>
 </html>
