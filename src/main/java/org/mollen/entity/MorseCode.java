@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "morse_codes")
 public class MorseCode {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "uuid")
     @JdbcTypeCode(SqlTypes.UUID)
     private UUID uuid;
