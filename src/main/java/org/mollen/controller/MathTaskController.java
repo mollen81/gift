@@ -19,7 +19,7 @@ public class MathTaskController {
     public String mathTaskWelcome(Model model) {
         model.addAttribute(
                 "description",
-                "Далее будут представлены 3 математические задачи. За правильный ответ на каждую из них, будет предоставлена первая цифра кода!"
+                "В блоке будут представлены 3 математические задачи. За правильный ответ на каждую из них, будет предоставлена первая цифра кода!"
         );
 
         return "math_task_welcome";
