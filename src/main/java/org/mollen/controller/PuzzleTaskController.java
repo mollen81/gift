@@ -21,7 +21,7 @@ public class PuzzleTaskController {
     public String puzzleTaskWelcome(Model model) {
         model.addAttribute(
                 "description",
-                "Распутай лабиринты линий, чтобы узнать зашифрованные слова. За успешное прохождение ты получишь третью цифру кода!"
+                "Распутай лабиринты линий, чтобы узнать зашифрованные слова. За успешное прохождение получишь третью цифру кода!"
         );
         return "puzzle_task_welcome";
     }
