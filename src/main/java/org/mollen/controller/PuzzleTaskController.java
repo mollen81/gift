@@ -29,7 +29,7 @@ public class PuzzleTaskController {
     @GetMapping("/puzzle_task")
     public String puzzleTask(@RequestParam int step, Model model) {
         // Проходим 3 шага (3 загадки)
-        if (step < 1 || step > 3) {
+        if (step > 1) {
             return "redirect:/puzzle_task_finish";
         }
 

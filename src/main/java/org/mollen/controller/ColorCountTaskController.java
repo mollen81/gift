@@ -29,7 +29,7 @@ public class ColorCountTaskController {
     @GetMapping("/color_task")
     public String colorTask(@RequestParam int step, Model model) {
         // Допустим, здесь тоже 3 шага
-        if (step < 1 || step > 3) {
+        if (step > 1) {
             return "redirect:/color_task_finish";
         }
 
