@@ -54,12 +54,15 @@
             }
 
             .hint-image {
-                max-width: 100%;
-                height: auto;
-                max-height: 300px;
+                width: 100%; /* Растягивает картинку на всю ширину карточки задания */
+                max-width: 580px; /* Задает максимальную комфортную ширину */
+                height: auto; /* Сохраняет пропорции изображения */
+                max-height: 500px; /* Увеличиваем лимит по высоте (было 300px), чтобы таблица стала крупнее */
+                object-fit: contain;
                 border-radius: 8px;
-                margin-bottom: 20px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 25px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                background-color: #fff;
             }
 
             .description {
