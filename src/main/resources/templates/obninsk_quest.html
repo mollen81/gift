@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Сбор слова ЛЮБОВЬ</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #87CEEB; position: relative; }
+        body::before { content: ""; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg opacity='0.55'%3E%3Ccircle cx='40' cy='40' r='4' fill='%23FFD54F'/%3E%3Cellipse cx='40' cy='30' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='50' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 50 35)'/%3E%3Cellipse cx='50' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 50 45)'/%3E%3Cellipse cx='40' cy='50' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='30' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 30 45)'/%3E%3Cellipse cx='30' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 30 35)'/%3E%3C/g%3E%3C/svg%3E"); background-size: 80px 80px; background-repeat: repeat; z-index: -1; }
+        .task-card { width: 620px; background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); animation: fadeIn 0.4s ease; text-align: center; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .title { font-size: 26px; font-weight: bold; margin-bottom: 15px; }
+        .target-char-box { font-size: 72px; font-weight: bold; color: #e91e63; margin: 15px 0; background: #fce4ec; display: inline-block; padding: 10px 40px; border-radius: 12px; border: 3px dashed #e91e63; }
+        .description { color: #555; margin-bottom: 25px; font-size: 16px; line-height: 1.5; }
+        .answer-input { width: 100%; padding: 12px; font-size: 18px; box-sizing: border-box; margin-bottom: 16px; border: 2px solid #ccc; border-radius: 6px; }
+        .file-input-wrapper { margin-bottom: 20px; text-align: left; background: #f5f5f5; padding: 12px; border-radius: 6px; border: 1px dashed #aaa; }
+        .file-input-label { font-weight: bold; display: block; margin-bottom: 8px; color: #333; }
+        .submit-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; background: #1976d2; color: white; font-size: 18px; transition: background 0.2s; }
+        .submit-btn:disabled { background: gray; cursor: not-allowed; }
+        .submit-btn:hover:not(:disabled) { background: #1565c0; }
+        .result-container { margin-top: 15px; min-height: 90px; }
+        .icon { display: none; font-size: 60px; font-weight: bold; }
+        .success { color: #2e7d32; }
+        .error { color: #d32f2f; }
+        #resultText { margin-top: 5px; font-size: 18px; font-weight: bold; }
+        #nextTaskButton { margin-top: 10px; background: #e91e63; }
+        #nextTaskButton:hover:not(:disabled) { background: #c2185b; }
+    </style>
+</head>
+<body>
+<div class="task-card">
+    <div class="title" th:text="|Шаг ${step} из 6|">Шаг</div>
+    <div class="description" th:text="${hintText}">Подсказка</div>
+
+    <div>В названии места обязана быть буква:</div>
+    <div class="target-char-box" th:text="${targetChar}">Л</div>
+
+    <form id="questForm" enctype="multipart/form-data">
+        <input type="hidden" name="step" th:value="${step}">
+        <input class="answer-input" type="text" id="locationName" name="locationName"
+               placeholder="Введите название локации" required>
+
+        <div class="file-input-wrapper">
+            <label class="file-input-label" for="locationPhoto">Прикрепите фотографию места:</label>
+            <input type="file" id="locationPhoto" name="locationPhoto" accept="image/*" required>
+        </div>
+
+        <button class="submit-btn" type="submit" id="submitBtn">Проверить</button>
+    </form>
+
+    <div id="resultContainer" class="result-container">
+        <div id="successIcon" class="icon success">✓</div>
+        <div id="errorIcon" class="icon error">✕</div>
+        <div id="resultText"></div>
+    </div>
+
+    <button id="nextTaskButton" class="submit-btn" disabled th:data-next-step="${step + 1}">
+        Следующая буква
+    </button>
+</div>
+
+<script>
+    document.getElementById("questForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+
+        const response = await fetch("/obninsk_quest_check", {
+            method: "POST",
+            body: formData
+        });
+
+        const isCorrect = await response.json();
+        const successIcon = document.getElementById("successIcon");
+        const errorIcon = document.getElementById("errorIcon");
+        const resultText = document.getElementById("resultText");
+        const nextButton = document.getElementById("nextTaskButton");
+
+        successIcon.style.display = "none";
+        errorIcon.style.display = "none";
+
+        if(isCorrect) {
+            successIcon.style.display = "block";
+            resultText.className = "success";
+            resultText.innerText = "Буква найдена! Фото зафиксировано.";
+            nextButton.disabled = false;
+
+            document.getElementById("locationName").disabled = true;
+            document.getElementById("locationPhoto").disabled = true;
+            document.getElementById("submitBtn").disabled = true;
+        } else {
+            errorIcon.style.display = "block";
+            resultText.className = "error";
+            const currentLetter = document.querySelector(".target-char-box").innerText;
+            resultText.innerText = "Ошибка! Во введенном названии отсутствует буква '" + currentLetter + "'.";
+        }
+    });
+
+    document.getElementById("nextTaskButton").addEventListener("click", function () {
+        const nextStep = this.dataset.nextStep;
+        window.location.href = "/obninsk_quest?step=" + nextStep;
+    });
+</script>
+</body>
+</html>
