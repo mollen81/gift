@@ -27,12 +27,13 @@
             }
 
             .task-card {
-                width: 600px;
+                width: 650px;
                 background: white;
                 padding: 32px;
                 border-radius: 16px;
                 box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
                 animation: fadeIn 0.5s ease;
+                text-align: center;
             }
 
             @keyframes fadeIn {
@@ -47,24 +48,36 @@
             }
 
             .title {
-                text-align: center;
                 font-size: 28px;
                 font-weight: bold;
                 margin-bottom: 20px;
             }
 
+            .hint-image {
+                max-width: 100%;
+                height: auto;
+                max-height: 300px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
             .description {
-                text-align: center;
                 color: #666;
-                margin-bottom: 25px;
+                margin-bottom: 20px;
+                line-height: 1.5;
             }
 
             .morse-text {
-                text-align: center;
-                font-size: 36px;
+                font-size: 22px;
                 font-weight: bold;
-                letter-spacing: 8px;
-                margin-bottom: 30px;
+                letter-spacing: 3px;
+                margin: 20px 0;
+                padding: 15px;
+                background: #f5f5f5;
+                border-radius: 8px;
+                word-wrap: break-word;
+                line-height: 1.6;
             }
 
             .answer-input {
@@ -73,6 +86,13 @@
                 font-size: 18px;
                 box-sizing: border-box;
                 margin-bottom: 16px;
+                border: 2px solid #ccc;
+                border-radius: 6px;
+            }
+
+            .answer-input:disabled {
+                background: #e0e0e0;
+                border-color: #aaa;
             }
 
             .submit-btn {
@@ -84,21 +104,55 @@
                 background: #1976d2;
                 color: white;
                 font-size: 18px;
+                margin-bottom: 10px;
+                transition: background 0.2s;
             }
 
-            .submit-btn:hover {
+            .submit-btn:hover:not(:disabled) {
                 background: #1565c0;
             }
 
+            .submit-btn:disabled {
+                background: gray;
+                cursor: not-allowed;
+            }
+
+            .question-box {
+                margin: 25px 0;
+                padding: 20px;
+                background: #e3f2fd;
+                border-left: 5px solid #1976d2;
+                border-radius: 4px;
+                text-align: left;
+                animation: slideDown 0.3s ease;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .question-title {
+                font-weight: bold;
+                color: #0d47a1;
+                margin-bottom: 8px;
+                font-size: 18px;
+            }
+
             .result-container {
-                text-align: center;
-                margin-top: 20px;
-                min-height: 120px;
+                margin-top: 15px;
+                min-height: 100px;
             }
 
             .icon {
                 display: none;
-                font-size: 80px;
+                font-size: 60px;
                 font-weight: bold;
                 animation: pop 0.4s ease;
             }
@@ -106,7 +160,6 @@
             .success {
                 color: #2e7d32;
             }
-
             .error {
                 color: #d32f2f;
             }
@@ -126,18 +179,9 @@
             }
 
             #resultText {
-                margin-top: 10px;
-                font-size: 20px;
+                margin-top: 5px;
+                font-size: 18px;
                 font-weight: bold;
-            }
-
-            #finishButton {
-                margin-top: 20px;
-            }
-
-            #finishButton:disabled {
-                background: gray;
-                cursor: not-allowed;
             }
         </style>
     </head>
@@ -146,13 +190,14 @@
             <div class="title" th:text="|Загадка №${step}|">Загадка</div>
 
             <img
+                class="hint-image"
                 th:src="@{/images/morse_translation.png}"
-                alt="morse_translation"
+                alt="Алфавит Морзе"
             />
 
             <div class="description">
-                Твоя задача собрать предложение из символов азбуки морзе,
-                отгадать загадку, а затем ответить на встречный вопрос.
+                Расшифруйте текст с помощью таблицы, определите слово-отгадку, а
+                затем ответьте на появившийся встречный вопрос.
             </div>
 
             <div class="morse-text" th:text="${morseText}"></div>
@@ -163,7 +208,7 @@
                     class="answer-input"
                     type="text"
                     id="riddleAnswer"
-                    placeholder="Введите отгадку (слово)"
+                    placeholder="Введите слово-отгадку (например: время)"
                     required
                 />
                 <button class="submit-btn" type="submit" id="riddleSubmitBtn">
@@ -171,24 +216,18 @@
                 </button>
             </form>
 
-            <div id="questionContainer" style="display: none; margin-top: 25px">
-                <div
-                    class="description"
-                    style="
-                        font-weight: bold;
-                        font-size: 20px;
-                        color: #1976d2;
-                        margin-bottom: 15px;
-                    "
-                    th:text="${taskDescription}"
-                ></div>
+            <div id="questionContainer" style="display: none">
+                <div class="question-box">
+                    <div class="question-title">Дополнительный вопрос:</div>
+                    <div th:text="${taskDescription}">Текст вопроса из БД</div>
+                </div>
 
                 <form id="finalAnswerForm">
                     <input
                         class="answer-input"
                         type="number"
                         id="finalAnswer"
-                        placeholder="Введите ответ на вопрос (число)"
+                        placeholder="Введите числовой ответ"
                         required
                     />
                     <button
@@ -230,7 +269,7 @@
                 resultText.innerText = "";
             }
 
-            // Обработка Шага 1: Проверка слова-отгадки
+            // Логика проверки текстовой отгадки (Шаг 1)
             document
                 .getElementById("riddleForm")
                 .addEventListener("submit", async function (event) {
@@ -256,10 +295,11 @@
 
                     if (isCorrect) {
                         successIcon.style.display = "block";
+                        resultText.className = "success";
                         resultText.innerText =
-                            "Отгадка верна! Теперь ответьте на появившийся вопрос.";
+                            "Отгадка верна! Теперь ответьте на встречный вопрос.";
 
-                        // Активируем Шаг 2 и блокируем Шаг 1
+                        // Блокируем форму Шага 1 и показываем Шаг 2
                         document.getElementById(
                             "questionContainer",
                         ).style.display = "block";
@@ -268,12 +308,13 @@
                             true;
                     } else {
                         errorIcon.style.display = "block";
+                        resultText.className = "error";
                         resultText.innerText =
-                            "Неверная отгадка, попробуйте еще раз!";
+                            "Неверно, попробуйте расшифровать заново.";
                     }
                 });
 
-            // Обработка Шага 2: Проверка числа (результата)
+            // Логика проверки числового ответа на вопрос (Шаг 2)
             document
                 .getElementById("finalAnswerForm")
                 .addEventListener("submit", async function (event) {
@@ -298,27 +339,28 @@
 
                     if (isCorrect) {
                         successIcon.style.display = "block";
+                        resultText.className = "success";
                         resultText.innerText =
-                            "Ответ верный! Задание полностью пройдено.";
+                            "Отлично! Задание полностью выполнено.";
 
-                        // Разблокируем переход к следующему шагу и фиксируем инпуты
+                        // Разрешаем переход дальше и замораживаем ввод
                         nextButton.disabled = false;
                         document.getElementById("finalAnswer").disabled = true;
                         document.getElementById("finalSubmitBtn").disabled =
                             true;
                     } else {
                         errorIcon.style.display = "block";
-                        resultText.innerText = "Ответ на вопрос неверный!";
+                        resultText.className = "error";
+                        resultText.innerText =
+                            "Неверный ответ на встречный вопрос!";
                     }
                 });
 
-            // Переход к следующему шагу
-            document
-                .getElementById("nextTaskButton")
-                .addEventListener("click", function () {
-                    const nextStep = this.dataset.nextStep;
-                    window.location.href = "/morse_code/task?step=" + nextStep;
-                });
+            // Корректный переход к следующему шагу без undefined
+            nextButton.addEventListener("click", function () {
+                const nextStep = this.dataset.nextStep;
+                window.location.href = "/morse_code/task?step=" + nextStep;
+            });
         </script>
     </body>
 </html>
