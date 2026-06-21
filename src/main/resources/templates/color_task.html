@@ -1,90 +1,218 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Поиск элементов</title>
-    <style>
-        body { margin: 0; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #87CEEB; position: relative; }
-        body::before { content: ""; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg opacity='0.55'%3E%3Ccircle cx='40' cy='40' r='4' fill='%23FFD54F'/%3E%3Cellipse cx='40' cy='30' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='50' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 50 35)'/%3E%3Cellipse cx='50' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 50 45)'/%3E%3Cellipse cx='40' cy='50' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='30' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 30 45)'/%3E%3Cellipse cx='30' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 30 35)'/%3E%3C/g%3E%3C/svg%3E"); background-size: 80px 80px; background-repeat: repeat; z-index: -1; }
-        .task-card { width: 650px; background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); animation: fadeIn 0.4s ease; text-align: center; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .title { font-size: 28px; font-weight: bold; margin-bottom: 15px; }
-        .description { color: #1976d2; font-size: 18px; font-weight: bold; margin-bottom: 20px; line-height: 1.5; }
-        .puzzle-image { width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border: 2px solid #ddd; }
-        .answer-input { width: 100%; padding: 12px; font-size: 18px; box-sizing: border-box; margin-bottom: 16px; }
-        .submit-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; background: #1976d2; color: white; font-size: 18px; transition: background 0.2s, transform 0.1s; }
-        .submit-btn:active { transform: scale(0.98); }
-        .submit-btn:hover { background: #1565c0; }
-        .result-container { margin-top: 15px; min-height: 80px; }
-        .icon { display: none; font-size: 60px; font-weight: bold; animation: pop 0.4s ease; }
-        .success { color: #2e7d32; }
-        .error { color: #d32f2f; }
-        @keyframes pop { 0% { transform: scale(0.3); opacity: 0; } 70% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
-        #resultText { margin-top: 10px; font-size: 20px; font-weight: bold; }
-        #nextTaskButton { margin-top: 10px; }
-        #nextTaskButton:disabled { background: gray; cursor: not-allowed; }
-    </style>
-</head>
-<body>
-<div class="task-card">
-    <div class="title" th:text="|Уровень ${step}|">Уровень</div>
-    <div class="description" th:text="${taskObject.taskDescription}">Описание задачи</div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>Поиск элементов</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background-color: #87ceeb;
+                position: relative;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg opacity='0.55'%3E%3Ccircle cx='40' cy='40' r='4' fill='%23FFD54F'/%3E%3Cellipse cx='40' cy='30' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='50' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 50 35)'/%3E%3Cellipse cx='50' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 50 45)'/%3E%3Cellipse cx='40' cy='50' rx='5' ry='8' fill='%23FFFFFF'/%3E%3Cellipse cx='30' cy='45' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(60 30 45)'/%3E%3Cellipse cx='30' cy='35' rx='5' ry='8' fill='%23FFFFFF' transform='rotate(120 30 35)'/%3E%3C/g%3E%3C/svg%3E");
+                background-size: 80px 80px;
+                background-repeat: repeat;
+                z-index: -1;
+            }
 
-    <img class="puzzle-image" th:src="@{${taskObject.imagePath}}" alt="Картинка" />
+            .task-card {
+                width: 92%;
+                max-width: 620px;
+                background: white;
+                padding: 20px;
+                border-radius: 16px;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                box-sizing: border-box;
+            }
+            .title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .description {
+                color: #1976d2;
+                font-size: 15px;
+                font-weight: bold;
+                margin-bottom: 15px;
+                line-height: 1.4;
+            }
 
-    <form id="answerForm">
-        <input type="hidden" name="taskId" th:value="${taskObject.uuid}">
-        <input class="answer-input" type="number" name="userAnswer" placeholder="Введите количество" required>
-        <button class="submit-btn" type="submit">Проверить</button>
-    </form>
+            .puzzle-image {
+                width: 100%;
+                height: auto;
+                max-height: 280px; /* Ограничиваем вектор на мобильных, чтобы не занимал весь экран */
+                border-radius: 8px;
+                margin-bottom: 15px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                border: 2px solid #ddd;
+            }
 
-    <div id="resultContainer" class="result-container">
-        <div id="successIcon" class="icon success">✓</div>
-        <div id="errorIcon" class="icon error">✕</div>
-        <div id="resultText"></div>
-    </div>
+            .answer-input {
+                width: 100%;
+                padding: 12px;
+                font-size: 16px;
+                box-sizing: border-box;
+                margin-bottom: 12px;
+                border: 2px solid #ccc;
+                border-radius: 6px;
+                -webkit-appearance: none;
+            }
 
-    <button id="nextTaskButton" class="submit-btn" disabled th:data-next-step="${step + 1}">
-        Следующая картинка
-    </button>
-</div>
+            .submit-btn {
+                width: 100%;
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                background: #1976d2;
+                color: white;
+                font-size: 16px;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .submit-btn:disabled {
+                background: gray;
+                cursor: not-allowed;
+            }
 
-<script>
-    document.getElementById("answerForm").addEventListener("submit", async function(event) {
-        event.preventDefault();
+            .result-container {
+                margin-top: 10px;
+                min-height: 70px;
+            }
+            .icon {
+                display: none;
+                font-size: 45px;
+                font-weight: bold;
+            }
+            .success {
+                color: #2e7d32;
+            }
+            .error {
+                color: #d32f2f;
+            }
+            #resultText {
+                margin-top: 5px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            #nextTaskButton {
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="task-card">
+            <div class="title" th:text="|Уровень ${step}|">Уровень</div>
+            <div class="description" th:text="${taskObject.taskDescription}">
+                Описание задачи
+            </div>
 
-        const taskId = document.querySelector("input[name='taskId']").value;
-        const userAnswer = document.querySelector("input[name='userAnswer']").value;
+            <img
+                class="puzzle-image"
+                th:src="@{${taskObject.imagePath}}"
+                alt="Картинка"
+            />
 
-        const response = await fetch("/color_task_check", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "taskId=" + encodeURIComponent(taskId) + "&userAnswer=" + encodeURIComponent(userAnswer)
-        });
+            <form id="answerForm">
+                <input
+                    type="hidden"
+                    name="taskId"
+                    th:value="${taskObject.uuid}"
+                />
+                <input
+                    class="answer-input"
+                    type="number"
+                    name="userAnswer"
+                    placeholder="Введите количество"
+                    required
+                />
+                <button class="submit-btn" type="submit">Проверить</button>
+            </form>
 
-        const isCorrect = await response.json();
-        const successIcon = document.getElementById("successIcon");
-        const errorIcon = document.getElementById("errorIcon");
-        const resultText = document.getElementById("resultText");
-        const nextButton = document.getElementById("nextTaskButton");
+            <div id="resultContainer" class="result-container">
+                <div id="successIcon" class="icon success">✓</div>
+                <div id="errorIcon" class="icon error">✕</div>
+                <div id="resultText"></div>
+            </div>
 
-        successIcon.style.display = "none";
-        errorIcon.style.display = "none";
+            <button
+                id="nextTaskButton"
+                class="submit-btn"
+                disabled
+                th:data-next-step="${step + 1}"
+            >
+                Следующая картинка
+            </button>
+        </div>
 
-        if(isCorrect) {
-            successIcon.style.display = "block";
-            resultText.innerText = "Верно! Отличная внимательность.";
-            nextButton.disabled = false;
-        } else {
-            errorIcon.style.display = "block";
-            resultText.innerText = "Ой, кажется ты обсчитался. Попробуй еще раз!";
-        }
-    });
+        <script>
+            document
+                .getElementById("answerForm")
+                .addEventListener("submit", async function (event) {
+                    event.preventDefault();
 
-    document.getElementById("nextTaskButton").addEventListener("click", function () {
-        const nextStep = this.dataset.nextStep;
-        window.location.href = "/color_task?step=" + nextStep;
-    });
-</script>
-</body>
+                    const taskId = document.querySelector(
+                        "input[name='taskId']",
+                    ).value;
+                    const userAnswer = document.querySelector(
+                        "input[name='userAnswer']",
+                    ).value;
+
+                    const response = await fetch("/color_task_check", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body:
+                            "taskId=" +
+                            encodeURIComponent(taskId) +
+                            "&userAnswer=" +
+                            encodeURIComponent(userAnswer),
+                    });
+
+                    const isCorrect = await response.json();
+                    const successIcon = document.getElementById("successIcon");
+                    const errorIcon = document.getElementById("errorIcon");
+                    const resultText = document.getElementById("resultText");
+                    const nextButton =
+                        document.getElementById("nextTaskButton");
+
+                    successIcon.style.display = "none";
+                    errorIcon.style.display = "none";
+
+                    if (isCorrect) {
+                        successIcon.style.display = "block";
+                        resultText.innerText =
+                            "Верно! Отличная внимательность.";
+                        nextButton.disabled = false;
+                    } else {
+                        errorIcon.style.display = "block";
+                        resultText.innerText =
+                            "Ой, кажется ты обсчитался. Попробуй еще раз!";
+                    }
+                });
+
+            document
+                .getElementById("nextTaskButton")
+                .addEventListener("click", function () {
+                    const nextStep = this.dataset.nextStep;
+                    window.location.href = "/color_task?step=" + nextStep;
+                });
+        </script>
+    </body>
 </html>

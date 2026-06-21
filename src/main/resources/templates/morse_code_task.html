@@ -2,8 +2,11 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
         <title>Азбука Морзе</title>
-
         <style>
             body {
                 margin: 0;
@@ -14,8 +17,9 @@
                 min-height: 100vh;
                 background-color: #87ceeb;
                 position: relative;
+                padding: 10px;
+                box-sizing: border-box;
             }
-
             body::before {
                 content: "";
                 position: fixed;
@@ -27,15 +31,16 @@
             }
 
             .task-card {
-                width: 650px;
+                width: 92%;
+                max-width: 650px;
                 background: white;
-                padding: 32px;
+                padding: 20px;
                 border-radius: 16px;
                 box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
                 animation: fadeIn 0.5s ease;
                 text-align: center;
+                box-sizing: border-box;
             }
-
             @keyframes fadeIn {
                 from {
                     opacity: 0;
@@ -48,51 +53,51 @@
             }
 
             .title {
-                font-size: 28px;
+                font-size: 24px;
                 font-weight: bold;
-                margin-bottom: 20px;
+                margin-bottom: 15px;
             }
 
             .hint-image {
-                width: 100%; /* Растягивает картинку на всю ширину карточки задания */
-                max-width: 580px; /* Задает максимальную комфортную ширину */
-                height: auto; /* Сохраняет пропорции изображения */
-                max-height: 500px; /* Увеличиваем лимит по высоте (было 300px), чтобы таблица стала крупнее */
+                width: 100%;
+                height: auto;
+                max-height: 250px;
                 object-fit: contain;
                 border-radius: 8px;
-                margin-bottom: 25px;
+                margin-bottom: 15px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                 background-color: #fff;
             }
 
             .description {
                 color: #666;
-                margin-bottom: 20px;
-                line-height: 1.5;
+                margin-bottom: 15px;
+                font-size: 14px;
+                line-height: 1.4;
             }
 
             .morse-text {
-                font-size: 22px;
+                font-size: 18px;
                 font-weight: bold;
-                letter-spacing: 3px;
-                margin: 20px 0;
-                padding: 15px;
+                letter-spacing: 2px;
+                margin: 15px 0;
+                padding: 12px;
                 background: #f5f5f5;
                 border-radius: 8px;
                 word-wrap: break-word;
-                line-height: 1.6;
+                line-height: 1.4;
             }
 
             .answer-input {
                 width: 100%;
                 padding: 12px;
-                font-size: 18px;
+                font-size: 16px;
                 box-sizing: border-box;
-                margin-bottom: 16px;
+                margin-bottom: 12px;
                 border: 2px solid #ccc;
                 border-radius: 6px;
+                -webkit-appearance: none; /* Фикс для iOS Safari округлений */
             }
-
             .answer-input:disabled {
                 background: #e0e0e0;
                 border-color: #aaa;
@@ -106,85 +111,56 @@
                 cursor: pointer;
                 background: #1976d2;
                 color: white;
-                font-size: 18px;
-                margin-bottom: 10px;
+                font-size: 16px;
+                margin-bottom: 8px;
                 transition: background 0.2s;
+                -webkit-tap-highlight-color: transparent;
             }
-
             .submit-btn:hover:not(:disabled) {
                 background: #1565c0;
             }
-
             .submit-btn:disabled {
                 background: gray;
                 cursor: not-allowed;
             }
 
             .question-box {
-                margin: 25px 0;
-                padding: 20px;
+                margin: 15px 0;
+                padding: 15px;
                 background: #e3f2fd;
                 border-left: 5px solid #1976d2;
                 border-radius: 4px;
                 text-align: left;
-                animation: slideDown 0.3s ease;
             }
-
-            @keyframes slideDown {
-                from {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
             .question-title {
                 font-weight: bold;
                 color: #0d47a1;
-                margin-bottom: 8px;
-                font-size: 18px;
+                margin-bottom: 5px;
+                font-size: 16px;
             }
 
             .result-container {
-                margin-top: 15px;
-                min-height: 100px;
+                margin-top: 10px;
+                min-height: 70px;
             }
-
             .icon {
                 display: none;
-                font-size: 60px;
+                font-size: 45px;
                 font-weight: bold;
-                animation: pop 0.4s ease;
             }
-
             .success {
                 color: #2e7d32;
             }
             .error {
                 color: #d32f2f;
             }
-
-            @keyframes pop {
-                0% {
-                    transform: scale(0.3);
-                    opacity: 0;
-                }
-                70% {
-                    transform: scale(1.15);
-                }
-                100% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-            }
-
             #resultText {
                 margin-top: 5px;
-                font-size: 18px;
+                font-size: 15px;
                 font-weight: bold;
+            }
+            #nextTaskButton {
+                margin-top: 10px;
             }
         </style>
     </head>

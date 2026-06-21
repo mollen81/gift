@@ -2,7 +2,11 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <title>Финал Квеста!</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>Подарок разблокирован!</title>
         <style>
             body {
                 margin: 0;
@@ -13,6 +17,8 @@
                 min-height: 100vh;
                 background-color: #87ceeb;
                 position: relative;
+                padding: 10px;
+                box-sizing: border-box;
             }
             body::before {
                 content: "";
@@ -23,65 +29,73 @@
                 background-repeat: repeat;
                 z-index: -1;
             }
+
             .finish-card {
-                width: 600px;
+                width: 92%;
+                max-width: 600px;
                 background: white;
-                padding: 40px;
+                padding: 25px 20px;
                 border-radius: 16px;
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 16 rgba(0, 0, 0, 0.1);
                 text-align: center;
                 animation: fadeIn 0.5s ease;
+                box-sizing: border-box;
             }
             .success-icon {
-                font-size: 80px;
-                margin-bottom: 20px;
+                font-size: 60px;
+                margin-bottom: 15px;
             }
             .title {
-                font-size: 32px;
+                font-size: 26px;
                 font-weight: bold;
-                margin-bottom: 20px;
+                margin-bottom: 15px;
                 color: #2e7d32;
             }
             .description {
-                font-size: 18px;
+                font-size: 15px;
                 color: #444;
-                line-height: 1.6;
-                margin-bottom: 25px;
+                line-height: 1.5;
+                margin-bottom: 20px;
             }
+
             .code-container {
-                margin-bottom: 30px;
+                margin-bottom: 20px;
             }
             .code-label {
-                font-size: 20px;
-                margin-bottom: 10px;
+                font-size: 16px;
+                margin-bottom: 8px;
                 font-weight: bold;
             }
             .code-number {
-                font-size: 72px;
+                font-size: 48px; /* Чуть компактнее, чтобы не вылезало за края экрана */
                 font-weight: bold;
                 color: #1976d2;
                 border: 3px dashed #1976d2;
                 border-radius: 12px;
                 display: inline-block;
-                padding: 15px 50px;
+                padding: 10px 35px;
                 background: #e3f2fd;
             }
+
             .barcode-box {
-                margin: 25px 0;
-                padding: 20px;
+                margin: 20px 0;
+                padding: 15px;
                 background: #fafafa;
                 border: 1px solid #ddd;
                 border-radius: 8px;
+                box-sizing: border-box;
             }
             .barcode-image {
-                max-width: 100%;
+                width: 100%;
                 height: auto;
-                max-height: 140px;
+                max-height: 110px;
+                object-fit: contain;
             }
             .barcode-title {
                 font-weight: bold;
-                margin-bottom: 15px;
+                margin-bottom: 10px;
                 color: #333;
+                font-size: 15px;
             }
             @keyframes fadeIn {
                 from {
