@@ -21,7 +21,7 @@ public class MorseCodeController {
     public String morseCodeWelcomePage(Model model) {
         model.addAttribute(
                 "description",
-                "Далее будут представлена азбука морзе. За правильный ответ на задачу, будет предоставлена вторая цифра кода!"
+                "Далее будут представлена азбука морзе. За правильный ответ на задачу, будет предоставлена вторая и третья цифра кода!"
                 );
 
         return "morse_code_welcome";

@@ -21,7 +21,7 @@ public class ColorCountTaskController {
     public String colorTaskWelcome(Model model) {
         model.addAttribute(
                 "description",
-                "Следующий блок проверит твою внимательность. Изучи картинки и посчитай нужные элементы. За прохождение получишь четвертую цифру кода!"
+                "Следующий блок проверит твою внимательность. Изучи картинки и посчитай нужные элементы. За прохождение получишь пятую цифру кода!"
         );
         return "color_task_welcome";
     }
